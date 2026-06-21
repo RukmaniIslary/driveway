@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Terms & Conditions — XoxoCafe",
   description:
     "Read the XoxoCafe Terms and Conditions covering bookings, deposits, cancellations, liability, and your rights as a customer.",
-  alternates: { canonical: "https://xoxocafe.com/terms" },
+  alternates: { canonical: "https://xoxocafe.xyz/terms" },
   robots: { index: true, follow: false },
 };
 

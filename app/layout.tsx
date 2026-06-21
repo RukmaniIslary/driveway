@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://xoxocafe.com"),
+  metadataBase: new URL("https://xoxocafe.xyz"),
   title: {
     default: "XoxoCafe — Mobile Pet Grooming",
     template: "%s | XoxoCafe",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://xoxocafe.com",
+    url: "https://xoxocafe.xyz",
     siteName: "XoxoCafe",
     title: "XoxoCafe — Mobile Pet Grooming",
     description:

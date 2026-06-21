@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Pricing — XoxoCafe",
   description:
     "Transparent, flat-rate pricing for every XoxoCafe mobile pet grooming service. No hidden fees. Secure your spot with a small deposit.",
-  alternates: { canonical: "https://xoxocafe.com/prices" },
+  alternates: { canonical: "https://xoxocafe.xyz/prices" },
 };
 
 const INCLUDES: Record<string, string[]> = {

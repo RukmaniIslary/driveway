@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "About XoxoCafe",
   description:
     "Learn about XoxoCafe — a mobile pet grooming service that brings professional care right to your driveway. Our story, our values, and why pet owners trust us.",
-  alternates: { canonical: "https://xoxocafe.com/about" },
+  alternates: { canonical: "https://xoxocafe.xyz/about" },
 };
 
 const VALUES = [

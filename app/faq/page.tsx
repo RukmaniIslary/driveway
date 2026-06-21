@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "FAQ — XoxoCafe",
   description:
     "Answers to common questions about XoxoCafe mobile pet grooming — deposits, scheduling, what to expect, breed sizes, and more.",
-  alternates: { canonical: "https://xoxocafe.com/faq" },
+  alternates: { canonical: "https://xoxocafe.xyz/faq" },
 };
 
 const FAQS = [

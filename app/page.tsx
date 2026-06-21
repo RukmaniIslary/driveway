@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Book your mobile pet grooming appointment with XoxoCafe. Choose a service, pick a time, and secure your spot with a small deposit.",
   alternates: {
-    canonical: "https://xoxocafe.com",
+    canonical: "https://xoxocafe.xyz",
   },
 };
 
