@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,31 +7,43 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", loading, children, disabled, ...props }, ref) => {
+  ({ variant = "primary", size = "md", loading, children, disabled, style, className, ...props }, ref) => {
+    const base: React.CSSProperties = {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 600,
+      borderRadius: 10,
+      border: "none",
+      cursor: disabled || loading ? "not-allowed" : "pointer",
+      opacity: disabled || loading ? 0.55 : 1,
+      transition: "all 0.15s ease",
+      fontSize: size === "lg" ? 15 : size === "sm" ? 13 : 14,
+      height: size === "lg" ? 48 : size === "sm" ? 34 : 42,
+      padding: size === "lg" ? "0 24px" : size === "sm" ? "0 12px" : "0 18px",
+      ...style,
+    };
+
+    const variantStyle: React.CSSProperties =
+      variant === "primary"
+        ? { background: "var(--accent)", color: "#1a1a1a" }
+        : variant === "secondary"
+        ? { background: "var(--surface)", color: "var(--text)", border: "1.5px solid var(--border)" }
+        : variant === "danger"
+        ? { background: "#fee2e2", color: "#dc2626", border: "1.5px solid #fecaca" }
+        : { background: "transparent", color: "var(--text-muted)" };
+
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
-        className={cn(
-          "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-lg",
-          {
-            "bg-slate-900 text-white hover:bg-slate-700 focus-visible:ring-slate-900": variant === "primary",
-            "border border-slate-300 bg-white text-slate-900 hover:bg-slate-50 focus-visible:ring-slate-400": variant === "secondary",
-            "text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus-visible:ring-slate-400": variant === "ghost",
-            "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600": variant === "danger",
-          },
-          {
-            "h-8 px-3 text-sm": size === "sm",
-            "h-10 px-4 text-sm": size === "md",
-            "h-12 px-6 text-base": size === "lg",
-          },
-          className
-        )}
+        style={{ ...base, ...variantStyle }}
+        className={className}
         {...props}
       >
         {loading ? (
-          <span className="flex items-center gap-2">
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <svg className="animate-spin" style={{ width: 16, height: 16 }} viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
             </svg>

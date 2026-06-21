@@ -1,18 +1,46 @@
 @import "tailwindcss";
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --brand: #1a1a2e;
+  --brand-mid: #16213e;
+  --accent: #e8b86d;
+  --accent-hover: #d4a355;
+  --surface: #ffffff;
+  --surface-2: #f7f7f5;
+  --border: #e5e5e3;
+  --text: #1a1a1a;
+  --text-muted: #6b6b6b;
+  --text-light: #9b9b9b;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
 }
 
-/* Paddle Checkout overlay z-index fix */
-.paddle-frame {
-  z-index: 9999 !important;
+/* Paddle overlay */
+.paddle-frame { z-index: 9999 !important; }
+
+/* Smooth transitions */
+button, input, select, textarea {
+  transition: all 0.15s ease;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

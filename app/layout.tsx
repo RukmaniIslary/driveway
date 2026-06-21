@@ -2,21 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Driveway — Mobile Grooming Booking",
+  title: "Driveway — Mobile Pet Grooming Booking",
   description:
-    "Book and pay a deposit for your mobile pet grooming appointment. Secured by Paddle.",
+    "Book your mobile pet grooming appointment and secure your spot with a deposit. Powered by Driveway.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-slate-50 text-slate-900">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

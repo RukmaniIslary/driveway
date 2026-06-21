@@ -2,10 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { initializePaddle, type Paddle } from "@paddle/paddle-js";
-import Button from "@/components/ui/Button";
-import { formatDollars } from "@/lib/utils";
-import type { BookingFormData } from "@/lib/types";
 import { SERVICES } from "@/lib/constants";
+import type { BookingFormData } from "@/lib/types";
 
 interface PaddleCheckoutProps {
   formData: BookingFormData;
@@ -14,12 +12,7 @@ interface PaddleCheckoutProps {
   disabled?: boolean;
 }
 
-export default function PaddleCheckout({
-  formData,
-  onSuccess,
-  onError,
-  disabled,
-}: PaddleCheckoutProps) {
+export default function PaddleCheckout({ formData, onSuccess, onError, disabled }: PaddleCheckoutProps) {
   const paddleRef = useRef<Paddle | null>(null);
   const [loading, setLoading] = useState(false);
   const [paddleReady, setPaddleReady] = useState(false);
@@ -29,7 +22,6 @@ export default function PaddleCheckout({
   useEffect(() => {
     const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
     const env = process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT as "sandbox" | "production" | undefined;
-
     if (!token) return;
 
     initializePaddle({
@@ -37,8 +29,7 @@ export default function PaddleCheckout({
       environment: env ?? "sandbox",
       eventCallback(event) {
         if (event.name === "checkout.completed") {
-          const txId = event.data?.transaction_id ?? "";
-          onSuccess(txId);
+          onSuccess(event.data?.transaction_id ?? "");
         }
         if (event.name === "checkout.error") {
           onError("Payment failed. Please try a different card.");
@@ -48,18 +39,13 @@ export default function PaddleCheckout({
         }
       },
     }).then((p) => {
-      if (p) {
-        paddleRef.current = p;
-        setPaddleReady(true);
-      }
+      if (p) { paddleRef.current = p; setPaddleReady(true); }
     });
   }, [onSuccess, onError]);
 
   const handlePay = async () => {
     if (!paddleRef.current || !service) return;
-
     setLoading(true);
-
     try {
       await paddleRef.current.Checkout.open({
         items: [{ priceId: service.priceId, quantity: 1 }],
@@ -81,37 +67,58 @@ export default function PaddleCheckout({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-2">
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-600">{service.name}</span>
-          <span className="font-medium text-slate-900">{formatDollars(service.price)}</span>
+      {/* Summary */}
+      <div className="rounded-xl p-4 space-y-3" style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}>
+        <div className="flex justify-between items-center">
+          <span className="font-semibold" style={{ color: "var(--text)" }}>{service.name}</span>
+          <span className="font-semibold" style={{ color: "var(--text)" }}>${service.price}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-600">Deposit due now</span>
-          <span className="font-bold text-slate-900">{formatDollars(service.deposit)}</span>
+        <div className="h-px" style={{ background: "var(--border)" }} />
+        <div className="flex justify-between items-center">
+          <span className="text-sm" style={{ color: "var(--text-muted)" }}>Deposit due now</span>
+          <span className="text-lg font-bold" style={{ color: "var(--brand)" }}>${service.deposit}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-600">Balance at appointment</span>
-          <span className="text-slate-600">{formatDollars(service.price - service.deposit)}</span>
+        <div className="flex justify-between items-center">
+          <span className="text-sm" style={{ color: "var(--text-muted)" }}>Balance at appointment</span>
+          <span className="text-sm font-medium" style={{ color: "var(--text)" }}>${service.price - service.deposit}</span>
         </div>
-        <p className="text-xs text-slate-500 pt-1 border-t border-slate-200">
+        <p className="text-xs pt-1" style={{ color: "var(--text-light)", borderTop: "1px solid var(--border)", paddingTop: 10 }}>
           Deposit applied to your total. Refunded in full if you reschedule more than 24 hours out.
         </p>
       </div>
 
-      <Button
-        size="lg"
-        className="w-full"
+      {/* Pay button */}
+      <button
+        type="button"
         onClick={handlePay}
-        loading={loading}
         disabled={disabled || !paddleReady || loading}
+        className="w-full font-semibold rounded-xl text-base flex items-center justify-center gap-2"
+        style={{
+          height: 52,
+          background: paddleReady ? "var(--accent)" : "var(--border)",
+          color: paddleReady ? "#1a1a1a" : "var(--text-light)",
+          border: "none",
+          cursor: !paddleReady || loading ? "not-allowed" : "pointer",
+          opacity: loading ? 0.7 : 1,
+          letterSpacing: "0.01em",
+        }}
       >
-        {paddleReady
-          ? `Pay ${formatDollars(service.deposit)} deposit and confirm`
-          : "Loading payment..."}
-      </Button>
+        {loading ? (
+          <>
+            <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+            </svg>
+            Processing...
+          </>
+        ) : !paddleReady ? (
+          "Loading payment..."
+        ) : (
+          `Pay $${service.deposit} deposit and confirm`
+        )}
+      </button>
 
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs" style={{ color: "var(--text-light)" }}>
         Secured by Paddle. No-shows forfeit the deposit.
       </p>
     </div>
